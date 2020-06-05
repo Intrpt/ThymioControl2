@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private Roboter roboter;
+    private Button buttonUp, buttonDown, buttonLeft, buttonRight;
 
 
     @Override
@@ -34,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        Button buttonUp = findViewById(R.id.ButtonUp);
-        Button buttonDown = findViewById(R.id.ButtonDown);
-        Button buttonLeft = findViewById(R.id.ButtonLeft);
-        Button buttonRight = findViewById(R.id.ButtonRight);
+        buttonUp = findViewById(R.id.ButtonUp);
+        buttonDown = findViewById(R.id.ButtonDown);
+        buttonLeft = findViewById(R.id.ButtonLeft);
+        buttonRight = findViewById(R.id.ButtonRight);
 
         roboter = Roboter.getRoboter();
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
@@ -76,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -85,7 +84,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         //*******************************************END ONCREATE*********************************************************************
+    }
+
+    @Override
+    protected void onStart() {
+        UpdateButton();
+        super.onStart();
+    }
+
+    public void UpdateButton() {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO) {
+            buttonDown.setClickable(false);
+            buttonLeft.setClickable(false);
+            buttonRight.setClickable(false);
+            buttonDown.setClickable(false);
+        } if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
+            buttonDown.setClickable(true);
+            buttonLeft.setClickable(true);
+            buttonRight.setClickable(true);
+            buttonDown.setClickable(true);
+        }
     }
 
     public void TurnRight() {
@@ -125,12 +145,10 @@ public class MainActivity extends AppCompatActivity {
             else if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO)
                 roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
             SendIR(buildRC5(0,1,roboter.getStatus()));
-        } catch (Exception e) {
-
-        }
+            UpdateButton();
+        } catch (Exception e) { }
     }
-
-
+    
 
 
 
