@@ -2,21 +2,28 @@ package com.example.thymiocontrol2;
 
 import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thymiocontrol2.proto2pattern.IrCommand;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    ConsumerIrManager manager;
-    private EditText bitcount, data;
     public static int freq = 36000;
     private int multiply = 1000000/freq;
+
+    ConsumerIrManager manager;
+
+    private EditText bitcount, data;
+    private BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -24,12 +31,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bitcount = findViewById(R.id.bitCount);
-        data = findViewById(R.id.data);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        Button buttonUp = findViewById(R.id.ButtonUp);
+        Button buttonDown = findViewById(R.id.ButtonDown);
+        Button buttonLeft = findViewById(R.id.ButtonLeft);
+        Button buttonRight = findViewById(R.id.ButtonRight);
 
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
-        buildRC5(1,1,1);   }
+        buildRC5(1,1,1);
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+    }
 
 
 
