@@ -37,4 +37,6 @@ public class Roboter {
     public int getSpeed() {
         return this.speed;
     }
+
+
 }

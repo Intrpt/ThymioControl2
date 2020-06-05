@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private Roboter roboter;
     private Button buttonUp, buttonDown, buttonLeft, buttonRight;
+    private TextView speedView;
+
 
 
     @Override
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDown = findViewById(R.id.ButtonDown);
         buttonLeft = findViewById(R.id.ButtonLeft);
         buttonRight = findViewById(R.id.ButtonRight);
+        speedView = findViewById(R.id.speed);
 
         roboter = Roboter.getRoboter();
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
@@ -149,10 +153,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) { }
     }
 
-
+    public void UpdateSpeedView() {
+        if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL)
+            speedView.setText(roboter.getSpeed());
+        else if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO)
+            speedView.setText("AUTO");
+    }
 
 
     public void SendIR(final int[] pattern) {
+        UpdateSpeedView();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
