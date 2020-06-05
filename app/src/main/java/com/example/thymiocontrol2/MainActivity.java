@@ -3,6 +3,7 @@ package com.example.thymiocontrol2;
 import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.thymiocontrol2.control.Roboter;
 import com.example.thymiocontrol2.proto2pattern.IrCommand;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     ConsumerIrManager manager;
 
-    private EditText bitcount, data;
     private BottomNavigationView bottomNavigationView;
+    private Roboter roboter;
 
 
     @Override
@@ -37,9 +39,43 @@ public class MainActivity extends AppCompatActivity {
         Button buttonLeft = findViewById(R.id.ButtonLeft);
         Button buttonRight = findViewById(R.id.ButtonRight);
 
+        roboter = Roboter.getRoboter();
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
-        buildRC5(1,1,1);
+
+        buttonUp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Headway();
+                return false;
+            }
+        });
+
+        buttonRight.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                TurnRight();
+                return false;
+            }
+        });
+
+        buttonLeft.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                TurnLeft();
+                return false;
+            }
+        });
+
+        buttonDown.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Backwards();
+                return false;
+            }
+        });
+
+
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,26 +84,65 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        //*******************************************END ONCREATE*********************************************************************
     }
 
-
-
-
-
-    public void SendIR(View v) {
-        if (manager.hasIrEmitter()) {
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    manager.transmit(freq,buildRC5(0,1,1));
-
-                }
-            });
-            t.start();
+    public void TurnRight() {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
+            SendIR(buildRC5(0, 4, 0));
         }
-        else Toast.makeText(this, "KEIN TRANSMITTER", Toast.LENGTH_LONG).show();
     }
 
+    public void TurnLeft() {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
+            SendIR(buildRC5(0, 5, 0));
+        }
+    }
+
+    public void Headway() {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
+            SendIR(buildRC5(0, 2, roboter.accelerate(50)));
+        }
+    }
+
+    public void Backwards() {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
+            if(roboter.getSpeed() >= 100) {
+                SendIR(buildRC5(0, 2, roboter.accelerate(-100)));
+            } else if(roboter.getSpeed() > 0) {
+                SendIR(buildRC5(0, 2, 0));
+            } else {
+                SendIR(buildRC5(0, 2, roboter.accelerate(-50)));
+            }
+        }
+    }
+
+    public void ChangeRoboterMode(View v){
+        try {
+            if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL)
+                roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_AUTO);
+            else if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO)
+                roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
+            SendIR(buildRC5(0,1,roboter.getStatus()));
+        } catch (Exception e) {
+
+        }
+    }
+
+
+
+
+
+    public void SendIR(final int[] pattern) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                manager.transmit(freq,pattern);
+            }
+        });
+        t.start();
+    }
     public int[] buildRC5(int toggleBit, int systemadr, int command) {
         long rc5 = 0;
         rc5 = rc5 | (toggleBit<<11);
