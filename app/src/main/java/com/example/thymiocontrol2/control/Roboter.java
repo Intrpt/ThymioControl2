@@ -21,6 +21,7 @@ public class Roboter {
 
     public int accelerate(int dif) {
         speed += dif;
+        if(speed > maxSpeed) speed = maxSpeed;
         return speed;
     }
 

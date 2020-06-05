@@ -2,6 +2,7 @@ package com.example.thymiocontrol2;
 
 import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Roboter roboter;
     private Button buttonUp, buttonDown, buttonLeft, buttonRight;
     private TextView speedView;
-
+    private Handler slowDownTimer;
 
 
     @Override
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         speedView = findViewById(R.id.speed);
 
         roboter = Roboter.getRoboter();
+        slowDownTimer = new Handler();
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
 
@@ -95,7 +97,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         UpdateButton();
+        if(slowDownTimer == null) slowDownTimer = new Handler();
+
+        final Runnable slowDownProcess = new Runnable() {
+            public void run() {
+                SlowDown();
+                slowDownTimer.postDelayed(this, 1000);
+            }
+        };
+
+        slowDownTimer.postDelayed(slowDownProcess, 1000);
         super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     public void UpdateButton() {
@@ -127,6 +144,12 @@ public class MainActivity extends AppCompatActivity {
     public void Headway() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             SendIR(buildRC5(0, 2, roboter.accelerate(50)));
+        }
+    }
+
+    public void SlowDown() {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL && roboter.getSpeed() > 1) {
+            SendIR(buildRC5(0, 2, roboter.accelerate(-1)));
         }
     }
 
