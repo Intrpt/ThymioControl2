@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     public static int freq = 36000;
     private int multiply = 1000000/freq;
 
+    private boolean enableSlowDownTimer = true;
+
     ConsumerIrManager manager;
 
     private BottomNavigationView bottomNavigationView;
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        slowDownTimer.postDelayed(slowDownProcess, 1000);
+        if(enableSlowDownTimer) slowDownTimer.postDelayed(slowDownProcess, 1000);
         super.onStart();
     }
 

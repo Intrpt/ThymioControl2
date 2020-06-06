@@ -13,13 +13,86 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="THYMIO COLOR"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/thymioColorHeadline"
+            android:textSize="24sp">
+        </TextView>
+
         <com.google.android.material.button.MaterialButtonToggleGroup
-            app:layout_constraintBottom_toTopOf="@id/ButtonUp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thymioColorHeadline"
+            android:gravity="center"
+            android:id="@+id/toggleButtonColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40sp">
+            <Button
+                android:id="@+id/ColorModeAuto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AUTO MODE"
+                style="?attr/materialButtonOutlinedStyle"
+                android:onClick="ChangeRoboterMode"
+                />
+            <Button
+                android:id="@+id/ColorModeManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MANUAL MODE"
+                style="?attr/materialButtonOutlinedStyle"
+                android:onClick="ChangeRoboterMode"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <View
+            android:id="@+id/colorPickerView"
+            android:layout_width="200sp"
+            android:layout_height="50sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toggleButtonColor"
+            android:background="@color/colorPrimary">
+        </View>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/colorPickerView"
+            android:layout_marginTop="40sp"
+            android:id="@+id/t1"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/t1"
+            android:text="THYMIO CONTROL"
+            android:id="@+id/thymioControlHeadline"
+            android:layout_marginTop="80sp"
+            android:textSize="24sp">
+        </TextView>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:gravity="center"
             android:id="@+id/toggleButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20sp">
+            android:layout_marginBottom="40sp">
             <Button
                 android:id="@+id/DriveModeAuto"
                 android:layout_width="wrap_content"
@@ -47,6 +120,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/speed"
+            android:layout_marginTop="200sp"
             android:text="0">
         </TextView>
         
@@ -58,7 +132,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="80sp"
+            android:layout_marginTop="110sp"
             android:text="UP">
         </com.google.android.material.button.MaterialButton>
 
@@ -70,7 +144,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="80sp"
+            android:layout_marginTop="300sp"
             android:text="DOWN"/>
 
         <com.google.android.material.button.MaterialButton
@@ -82,6 +156,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="200sp"
+            android:layout_marginTop="200sp"
             android:text="RIGHT">
         </com.google.android.material.button.MaterialButton>
 
@@ -94,11 +169,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginRight="200sp"
+            android:layout_marginTop="200sp"
             android:text="LEFT">
         </com.google.android.material.button.MaterialButton>
 
 
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RESET"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+        </Button>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             app:layout_constraintBottom_toBottomOf="parent"
@@ -106,6 +189,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:menu="@menu/bottom_navigation_menu" />
+        
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
