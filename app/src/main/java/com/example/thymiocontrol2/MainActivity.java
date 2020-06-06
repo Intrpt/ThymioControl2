@@ -167,10 +167,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void ChangeRoboterMode(View v){
         try {
-            if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL)
+            if(v == findViewById(R.id.DriveModeAuto)) {
                 roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_AUTO);
-            else if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO)
+            } else if(v == findViewById(R.id.DriveModeManual)){
                 roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
+            } else {
+                Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+                return;
+            }
             SendIR(buildRC5(0,1,roboter.getStatus()));
             UpdateButton();
         } catch (Exception e) { }
