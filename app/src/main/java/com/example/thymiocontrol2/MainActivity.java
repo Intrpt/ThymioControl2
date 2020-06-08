@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         if(enableSlowDownTimer) slowDownTimer.postDelayed(slowDownProcess, 1000);
-        colorPickerView.setBackgroundColor(Color.rgb(roboter.getColorR(),roboter.getColorG(),roboter.getColorB()));
+        UpdateColorButton();
         super.onStart();
     }
 
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                             int[] argb = envelope.getArgb();
                             roboter.setColor(argb[1],argb[2],argb[3]);
                             UpdateRoboterColor();
-                            colorPickerView.setBackgroundColor(envelope.getColor());
+                            UpdateColorButton();
                         }
                     })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -183,6 +183,15 @@ public class MainActivity extends AppCompatActivity {
             buttonLeft.setClickable(true);
             buttonRight.setClickable(true);
             buttonDown.setClickable(true);
+        }
+    }
+
+    public void UpdateColorButton() {
+        if(roboter.getColormode() == Roboter.ROBOTER_COLOR_MODE_AUTO) {
+            colorPickerView.setVisibility(View.GONE);
+        } else if(roboter.getColormode() == Roboter.ROBOTER_COLOR_MODE_MANUAL){
+            colorPickerView.setVisibility(View.VISIBLE);
+            colorPickerView.setBackgroundColor(Color.rgb(roboter.getColorR(),roboter.getColorG(),roboter.getColorB()));
         }
     }
 
@@ -225,14 +234,15 @@ public class MainActivity extends AppCompatActivity {
     public void ChangeRoboterColorMode(View v) {
         try {
             if(v == findViewById(R.id.ColorModeAuto)) {
-                roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_MANUAL);
-            } else if(v == findViewById(R.id.ColorModeManual)){
                 roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_AUTO);
+            } else if(v == findViewById(R.id.ColorModeManual)){
+                roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_MANUAL);
             } else {
                 Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
                 return;
             }
             SendIR(buildRC5(0,1,roboter.getColormode()));
+            UpdateColorButton();
         } catch (Exception e) {
             Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
             Log.insert(e.toString());

@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
-            app:layout_constraintTop_toBottomOf="@+id/colorPickerView"
+            app:layout_constraintBottom_toTopOf="@id/thymioControlHeadline"
             android:layout_marginTop="40sp"
             android:id="@+id/t1"/>
 
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/t1"
+            app:layout_constraintBottom_toTopOf="@id/toggleButton"
             android:text="THYMIO CONTROL"
             android:id="@+id/thymioControlHeadline"
             android:layout_marginTop="0sp"
