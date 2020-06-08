@@ -182,13 +182,13 @@ public class MainActivity extends AppCompatActivity {
             buttonLeft.setEnabled(false);
             buttonRight.setEnabled(false);
             buttonDown.setEnabled(false);
-            findViewById(R.id.stopButton).setClickable(false);
+            findViewById(R.id.stopButton).setEnabled(false);
         } if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             buttonUp.setEnabled(true);
             buttonLeft.setEnabled(true);
             buttonRight.setEnabled(true);
             buttonDown.setEnabled(true);
-            findViewById(R.id.stopButton).setClickable(true);
+            findViewById(R.id.stopButton).setEnabled(true);
         }
     }
 
