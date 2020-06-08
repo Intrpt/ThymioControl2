@@ -231,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
             } else if(roboter.getSpeed() > 0) {
                 SendIR(buildRC5(0, 2, 0));
                 roboter.accelerate(roboter.getSpeed()*(-1));
+            } else {
+                SendIR(buildRC5(0, 2, roboter.accelerate(Roboter.ROBOTER_ACCELERATE*(-1))));
             }
         }
     }
