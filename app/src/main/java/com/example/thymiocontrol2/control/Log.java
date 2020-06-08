@@ -1,5 +1,6 @@
 package com.example.thymiocontrol2.control;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -12,7 +13,10 @@ public class Log {
 
     public static void insert(String str) {
         cLogfile();
-        logfile.add("["+Calendar.getInstance().getTime().toString()+"] "+str);
+
+
+
+        logfile.add("["+ DateFormat.getTimeInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime())+"] "+str);
         if(logfile.size() > threshold) logfile.removeFirst();
     }
 

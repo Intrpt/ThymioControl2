@@ -46,7 +46,7 @@ public class Roboter {
     }
 
     public int getColormode() {
-        return colormode;
+        return this.colormode;
     }
 
     public void setColor(int r, int g, int b) {

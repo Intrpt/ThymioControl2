@@ -75,8 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                         break;
+                    default: Toast.makeText(MainActivity.this,"FAILED",Toast.LENGTH_LONG).show();
                 }
-                return false;
+                return true;
             }
         });
 
@@ -115,12 +116,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return false;
-            }
-        });
 
 
         //*******************************************END ONCREATE*********************************************************************

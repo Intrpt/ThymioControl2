@@ -20,7 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 public class LogActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    ListView logList = findViewById(R.id.log);
+    ListView logList;
 
 
     @Override
@@ -29,6 +29,7 @@ public class LogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        logList = findViewById(R.id.log);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
