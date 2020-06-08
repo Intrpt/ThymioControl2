@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.reset:
-                        //RESET
+                        Reset();
+                        break;
                     default: Toast.makeText(MainActivity.this,"FAILED",Toast.LENGTH_LONG).show();
                 }
                 return true;
@@ -182,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
             buttonLeft.setEnabled(false);
             buttonRight.setEnabled(false);
             buttonDown.setEnabled(false);
-            findViewById(R.id.stopButton).setEnabled(false);
+            //findViewById(R.id.stopButton).setEnabled(false);
         } if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             buttonUp.setEnabled(true);
             buttonLeft.setEnabled(true);
             buttonRight.setEnabled(true);
             buttonDown.setEnabled(true);
-            findViewById(R.id.stopButton).setEnabled(true);
+            //findViewById(R.id.stopButton).setEnabled(true);
         }
     }
 
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Break(View v) {
-        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL && roboter.getSpeed() !=  0) {
+        if(roboter.getSpeed() !=  0) {
             SendIR(buildRC5(0, 2, roboter.accelerate(roboter.getSpeed()*(-1))));
         }
     }
@@ -329,8 +330,9 @@ public class MainActivity extends AppCompatActivity {
         return pattern;
     }
 
-    public void Reset(View v) {
+    public void Reset() {
         try {
+            Break(null);
             roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
             roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_AUTO);
             SendIR(buildRC5(0,32,32));
