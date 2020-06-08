@@ -178,13 +178,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void UpdateButton() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO) {
-            buttonDown.setEnabled(false);
+            buttonUp.setEnabled(false);
             buttonLeft.setEnabled(false);
             buttonRight.setEnabled(false);
             buttonDown.setEnabled(false);
             findViewById(R.id.stopButton).setClickable(false);
         } if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
-            buttonDown.setEnabled(true);
+            buttonUp.setEnabled(true);
             buttonLeft.setEnabled(true);
             buttonRight.setEnabled(true);
             buttonDown.setEnabled(true);
