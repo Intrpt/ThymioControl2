@@ -17,7 +17,7 @@ public class Roboter {
 
     private Roboter() {
         status = ROBOTER_DRIVE_MODE_MANUAL;
-        colormode = ROBOTER_COLOR_MODE_MANUAL;
+        colormode = ROBOTER_COLOR_MODE_AUTO;
     }
 
     public static Roboter getRoboter() {

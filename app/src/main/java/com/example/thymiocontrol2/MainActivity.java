@@ -3,6 +3,7 @@ package com.example.thymiocontrol2;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonUp, buttonDown, buttonLeft, buttonRight;
     private TextView speedView;
     private Handler slowDownTimer;
+    private View colorPickerView;
 
 
     @Override
@@ -54,19 +56,15 @@ public class MainActivity extends AppCompatActivity {
         buttonLeft = findViewById(R.id.ButtonLeft);
         buttonRight = findViewById(R.id.ButtonRight);
         speedView = findViewById(R.id.speed);
+        colorPickerView = findViewById(R.id.colorPickerView);
 
         roboter = Roboter.getRoboter();
         slowDownTimer = new Handler();
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
-
-
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                System.out.println("d");
                 switch (item.getItemId()) {
                     case R.id.mainPage:
                         break;
@@ -136,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         if(enableSlowDownTimer) slowDownTimer.postDelayed(slowDownProcess, 1000);
+        colorPickerView.setBackgroundColor(Color.rgb(roboter.getColorR(),roboter.getColorG(),roboter.getColorB()));
         super.onStart();
     }
 
@@ -157,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                             int[] argb = envelope.getArgb();
                             roboter.setColor(argb[1],argb[2],argb[3]);
                             UpdateRoboterColor();
+                            colorPickerView.setBackgroundColor(envelope.getColor());
                         }
                     })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     .attachAlphaSlideBar(false)
                     .attachBrightnessSlideBar(false)
                     .show();
+
         }
     }
 

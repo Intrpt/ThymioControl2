@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="40sp"
             app:selectionRequired="true"
-            app:checkedButton="@id/ColorModeManual"
+            app:checkedButton="@id/ColorModeAuto"
             app:singleSelection="true">
             <Button
                 android:id="@+id/ColorModeAuto"
