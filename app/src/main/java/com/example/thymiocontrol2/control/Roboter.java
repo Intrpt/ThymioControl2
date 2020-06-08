@@ -8,7 +8,13 @@ public class Roboter {
     public static int ROBOTER_COLOR_MODE_AUTO = 1;
     public static int ROBOTER_COLOR_MODE_MANUAL = 2;
 
+
+    public static int ROBOTER_ACCELERATE = 50;
+    public static int ROBOTER_SLOW_DOWN = -2;
     private static int maxSpeed = 300;
+
+
+
     private int speed = 0;
     private static Roboter roboter;
     private int status = 0;
@@ -28,6 +34,7 @@ public class Roboter {
     public int accelerate(int dif) {
         speed += dif;
         if(speed > maxSpeed) speed = maxSpeed;
+        else if (speed < maxSpeed*(-1)) speed = maxSpeed *(-1);
         return speed;
     }
 

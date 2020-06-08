@@ -147,28 +147,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void OpenColorPickerView(View v) {
         if(roboter.getColormode() == Roboter.ROBOTER_COLOR_MODE_MANUAL) {
-            new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
-                    .setTitle("Select Color")
-                    .setPreferenceName("Colorpicker")
-                    .setPositiveButton("OK", new ColorEnvelopeListener() {
-                        @Override
-                        public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
-                            int[] argb = envelope.getArgb();
-                            roboter.setColor(argb[1],argb[2],argb[3]);
-                            UpdateRoboterColor();
-                            UpdateColorButton();
-                        }
-                    })
-                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .attachAlphaSlideBar(false)
-                    .attachBrightnessSlideBar(false)
-                    .show();
-
+            try {
+                new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
+                        .setTitle("Select Color")
+                        .setPreferenceName("Colorpicker")
+                        .setPositiveButton("OK", new ColorEnvelopeListener() {
+                            @Override
+                            public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
+                                int[] argb = envelope.getArgb();
+                                roboter.setColor(argb[1], argb[2], argb[3]);
+                                UpdateRoboterColor();
+                                UpdateColorButton();
+                            }
+                        })
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .attachAlphaSlideBar(false)
+                        .attachBrightnessSlideBar(false)
+                        .show();
+            } catch (Exception e) {
+                Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+                Log.insert(e.toString());
+            }
         }
     }
 
@@ -209,24 +213,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void Headway() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
-            SendIR(buildRC5(0, 2, roboter.accelerate(50)));
+            SendIR(buildRC5(0, 2, roboter.accelerate(Roboter.ROBOTER_ACCELERATE)));
         }
     }
 
     public void SlowDown() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL && roboter.getSpeed() > 1) {
-            SendIR(buildRC5(0, 2, roboter.accelerate(-1)));
+            SendIR(buildRC5(0, 2, roboter.accelerate(Roboter.ROBOTER_SLOW_DOWN)));
         }
     }
 
+
     public void Backwards() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
-            if(roboter.getSpeed() >= 100) {
-                SendIR(buildRC5(0, 2, roboter.accelerate(-100)));
+            if(roboter.getSpeed() > Roboter.ROBOTER_ACCELERATE*(-1)) {
+                SendIR(buildRC5(0, 2, roboter.accelerate(Roboter.ROBOTER_ACCELERATE*(-1))));
             } else if(roboter.getSpeed() > 0) {
                 SendIR(buildRC5(0, 2, 0));
-            } else {
-                SendIR(buildRC5(0, 2, roboter.accelerate(-50)));
+                roboter.accelerate(roboter.getSpeed()*(-1));
             }
         }
     }
@@ -239,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_MANUAL);
             } else {
                 Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+                Log.insert("FAILED because of clicked view == "+v.toString());
                 return;
             }
             SendIR(buildRC5(0,1,roboter.getColormode()));
@@ -258,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
                 roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
             } else {
                 Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+                Log.insert("FAILED because of clicked view == "+v.toString());
                 return;
             }
             SendIR(buildRC5(0,1,roboter.getStatus()));
@@ -285,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
             SendIR(buildRC5(0,7,roboter.getColorB()));
         } else {
             Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
+            Log.insert("FAILED because of Robotor Colormode == "+roboter.getColormode());
         }
     }
 
@@ -310,5 +317,18 @@ public class MainActivity extends AppCompatActivity {
             pattern[d] = pattern[d] * multiply;
         }
         return pattern;
+    }
+
+    public void Reset(View v) {
+        try {
+            roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
+            roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_AUTO);
+            SendIR(buildRC5(0,32,32));
+            UpdateColorButton();
+            UpdateButton();
+        } catch( Exception e) {
+            Toast.makeText(MainActivity.this,"FAILED",Toast.LENGTH_LONG).show();
+            Log.insert(e.toString());
+        }
     }
 }
