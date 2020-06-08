@@ -178,15 +178,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void UpdateButton() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO) {
-            buttonDown.setClickable(false);
-            buttonLeft.setClickable(false);
-            buttonRight.setClickable(false);
-            buttonDown.setClickable(false);
+            buttonDown.setEnabled(false);
+            buttonLeft.setEnabled(false);
+            buttonRight.setEnabled(false);
+            buttonDown.setEnabled(false);
+            findViewById(R.id.stopButton).setClickable(false);
         } if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
-            buttonDown.setClickable(true);
-            buttonLeft.setClickable(true);
-            buttonRight.setClickable(true);
-            buttonDown.setClickable(true);
+            buttonDown.setEnabled(true);
+            buttonLeft.setEnabled(true);
+            buttonRight.setEnabled(true);
+            buttonDown.setEnabled(true);
+            findViewById(R.id.stopButton).setClickable(true);
         }
     }
 
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Break(View v) {
-        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL && roboter.getSpeed() > 1) {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL && roboter.getSpeed() !=  0) {
             SendIR(buildRC5(0, 2, roboter.accelerate(roboter.getSpeed()*(-1))));
         }
     }
