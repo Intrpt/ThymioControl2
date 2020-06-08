@@ -60,9 +60,13 @@ public class MainActivity extends AppCompatActivity {
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
 
+
+
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                System.out.println("d");
                 switch (item.getItemId()) {
                     case R.id.mainPage:
                         break;

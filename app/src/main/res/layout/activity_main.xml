@@ -32,7 +32,10 @@
             android:id="@+id/toggleButtonColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40sp">
+            android:layout_marginBottom="40sp"
+            app:selectionRequired="true"
+            app:checkedButton="@id/ColorModeManual"
+            app:singleSelection="true">
             <Button
                 android:id="@+id/ColorModeAuto"
                 android:layout_width="wrap_content"
@@ -80,7 +83,7 @@
             app:layout_constraintTop_toBottomOf="@+id/t1"
             android:text="THYMIO CONTROL"
             android:id="@+id/thymioControlHeadline"
-            android:layout_marginTop="80sp"
+            android:layout_marginTop="0sp"
             android:textSize="24sp">
         </TextView>
 
@@ -93,7 +96,10 @@
             android:id="@+id/toggleButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40sp">
+            android:layout_marginBottom="80sp"
+            app:selectionRequired="true"
+            app:checkedButton="@id/DriveModeManual"
+            app:singleSelection="true">
             <Button
                 android:id="@+id/DriveModeAuto"
                 android:layout_width="wrap_content"
