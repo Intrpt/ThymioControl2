@@ -223,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void Break(View v) {
+        if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL && roboter.getSpeed() > 1) {
+            SendIR(buildRC5(0, 2, roboter.accelerate(roboter.getSpeed()*(-1))));
+        }
+    }
+
 
     public void Backwards() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
