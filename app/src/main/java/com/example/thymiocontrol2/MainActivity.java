@@ -1,5 +1,8 @@
 package com.example.thymiocontrol2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,9 +17,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.thymiocontrol2.control.Log;
 import com.example.thymiocontrol2.control.Roboter;
 import com.example.thymiocontrol2.proto2pattern.IrCommand;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.ColorPickerView;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,6 +58,24 @@ public class MainActivity extends AppCompatActivity {
         roboter = Roboter.getRoboter();
         slowDownTimer = new Handler();
         manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
+
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.mainPage:
+                        break;
+                    case R.id.logPage:
+                        Intent intent = new Intent(MainActivity.this,LogActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        break;
+                }
+                return false;
+            }
+        });
+
 
 
         buttonUp.setOnTouchListener(new View.OnTouchListener() {
@@ -99,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         UpdateButton();
-        if(slowDownTimer == null) slowDownTimer = new Handler();
+        if(slowDownTimer == null && enableSlowDownTimer) slowDownTimer = new Handler();
 
         final Runnable slowDownProcess = new Runnable() {
             public void run() {
@@ -115,6 +141,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+
+
+    public void OpenColorPickerView(View v) {
+        if(roboter.getColormode() == Roboter.ROBOTER_COLOR_MODE_MANUAL) {
+            new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK)
+                    .setTitle("Select Color")
+                    .setPreferenceName("Colorpicker")
+                    .setPositiveButton("OK", new ColorEnvelopeListener() {
+                        @Override
+                        public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
+                            int[] argb = envelope.getArgb();
+                            roboter.setColor(argb[1],argb[2],argb[3]);
+                            UpdateRoboterColor();
+                        }
+                    })
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .attachAlphaSlideBar(false)
+                    .attachBrightnessSlideBar(false)
+                    .show();
+        }
     }
 
     public void UpdateButton() {
@@ -189,6 +242,18 @@ public class MainActivity extends AppCompatActivity {
             speedView.setText("AUTO");
     }
 
+    public void UpdateRoboterColor() {
+        if(roboter.getColormode() == Roboter.ROBOTER_COLOR_MODE_AUTO) {
+            SendIR(buildRC5(0,6,Roboter.ROBOTER_COLOR_MODE_AUTO));
+        } else if(roboter.getColormode() == Roboter.ROBOTER_COLOR_MODE_MANUAL) {
+            SendIR(buildRC5(0,6,Roboter.ROBOTER_COLOR_MODE_MANUAL));
+            SendIR(buildRC5(0,7,roboter.getColorR()));
+            SendIR(buildRC5(0,8,roboter.getColorG()));
+            SendIR(buildRC5(0,7,roboter.getColorB()));
+        } else {
+            Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void SendIR(final int[] pattern) {
         UpdateSpeedView();
@@ -202,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public int[] buildRC5(int toggleBit, int systemadr, int command) {
         long rc5 = 0;
+        Log.insert("tBit:"+toggleBit+" SysAddr:"+systemadr+" Command:"+command);
         rc5 = rc5 | (toggleBit<<11);
         rc5 = rc5 | (systemadr<<6);
         rc5 = rc5 |command;

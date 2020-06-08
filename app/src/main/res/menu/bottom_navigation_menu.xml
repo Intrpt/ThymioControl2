@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/mainPage"
         android:enabled="true"
         android:title="MAIN"/>
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/logPage"
         android:enabled="true"
-        android:title="SPECIAL"/>
+        android:title="LOG"/>
 </menu>
