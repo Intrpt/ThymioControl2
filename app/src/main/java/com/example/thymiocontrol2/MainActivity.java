@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                         break;
+                    case R.id.reset:
+                        //RESET
                     default: Toast.makeText(MainActivity.this,"FAILED",Toast.LENGTH_LONG).show();
                 }
                 return true;
@@ -219,6 +221,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void ChangeRoboterColorMode(View v) {
+        try {
+            if(v == findViewById(R.id.ColorModeAuto)) {
+                roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_MANUAL);
+            } else if(v == findViewById(R.id.ColorModeManual)){
+                roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_AUTO);
+            } else {
+                Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+                return;
+            }
+            SendIR(buildRC5(0,1,roboter.getColormode()));
+        } catch (Exception e) {
+            Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+            Log.insert(e.toString());
+        }
+
+    }
+
     public void ChangeRoboterMode(View v){
         try {
             if(v == findViewById(R.id.DriveModeAuto)) {
@@ -231,12 +251,15 @@ public class MainActivity extends AppCompatActivity {
             }
             SendIR(buildRC5(0,1,roboter.getStatus()));
             UpdateButton();
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+            Log.insert(e.toString());
+        }
     }
 
     public void UpdateSpeedView() {
         if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL)
-            speedView.setText(roboter.getSpeed());
+            speedView.setText(String.valueOf(roboter.getSpeed()));
         else if (roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO)
             speedView.setText("AUTO");
     }

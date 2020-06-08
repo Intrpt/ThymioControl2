@@ -5,6 +5,10 @@
         android:enabled="true"
         android:title="MAIN"/>
     <item
+        android:id="@+id/reset"
+        android:enabled="true"
+        android:title="RESET THYMIO"/>
+    <item
         android:id="@+id/logPage"
         android:enabled="true"
         android:title="LOG"/>

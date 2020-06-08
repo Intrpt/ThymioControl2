@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="AUTO MODE"
                 style="?attr/materialButtonOutlinedStyle"
-                android:onClick="ChangeRoboterMode"
+                android:onClick="ChangeRoboterColorMode"
                 />
             <Button
                 android:id="@+id/ColorModeManual"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="MANUAL MODE"
                 style="?attr/materialButtonOutlinedStyle"
-                android:onClick="ChangeRoboterMode"
+                android:onClick="ChangeRoboterColorMode"
                 />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -181,14 +181,7 @@
         </com.google.android.material.button.MaterialButton>
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="RESET"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-        </Button>
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             app:layout_constraintBottom_toBottomOf="parent"

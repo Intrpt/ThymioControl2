@@ -37,6 +37,12 @@ public class Roboter {
         } else throw new Exception("Unknown Roboter Status, Please use ROBOTER_DRIVE_MODE_MANUAL or ROBOTER_DRIVE_MODE_AUTO");
     }
 
+    public void setColormode(int mode) throws Exception {
+        if(mode == ROBOTER_COLOR_MODE_AUTO || mode == ROBOTER_COLOR_MODE_MANUAL) {
+            this.colormode = mode;
+        } else throw new Exception("Unknown Roboter Colormode, Please use ROBOTER_COLOR_MODE_AUTO or ROBOTER_COLOR_MODE_MANUAL");
+    }
+
     public int getStatus() {
         return this.status;
     }
