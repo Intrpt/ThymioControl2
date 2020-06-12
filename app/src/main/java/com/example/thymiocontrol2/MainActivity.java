@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static int freq = 36000;
     private int multiply = 1000000/freq;
 
-    private boolean enableSlowDownTimer = true;
+    private boolean enableSlowDownTimer = false;
 
     ConsumerIrManager manager;
 
@@ -236,12 +236,12 @@ public class MainActivity extends AppCompatActivity {
     public void Backwards() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             if(roboter.getSpeed() > Roboter.ROBOTER_ACCELERATE*(-1)) {
-                SendIR(buildRC5(0, 2, roboter.accelerate(Roboter.ROBOTER_ACCELERATE*(-1))));
+                SendIR(buildRC5(0, 3, roboter.accelerate(Roboter.ROBOTER_ACCELERATE*(-1))));
             } else if(roboter.getSpeed() > 0) {
-                SendIR(buildRC5(0, 2, 0));
+                SendIR(buildRC5(0, 3, 0));
                 roboter.accelerate(roboter.getSpeed()*(-1));
             } else {
-                SendIR(buildRC5(0, 2, roboter.accelerate(Roboter.ROBOTER_ACCELERATE*(-1))));
+                SendIR(buildRC5(0, 3, roboter.accelerate(Roboter.ROBOTER_ACCELERATE*(-1))));
             }
         }
     }
@@ -318,16 +318,25 @@ public class MainActivity extends AppCompatActivity {
     }
     public int[] buildRC5(int toggleBit, int systemadr, int command) {
         long rc5 = 0;
-        Log.insert("tBit:"+toggleBit+" SysAddr:"+systemadr+" Command:"+command);
-        rc5 = rc5 | (toggleBit<<11);
-        rc5 = rc5 | (systemadr<<6);
-        rc5 = rc5 |command;
-        IrCommand rc5Command=  IrCommand.RC5.buildRC5(12,rc5);
-        int[] pattern = rc5Command.pattern;
-        for (int d = 0; d < pattern.length; d++) {
-            pattern[d] = pattern[d] * multiply;
+        if(command < 0) command = Math.abs(command);
+        if (command > 63) {
+            Log.insert("WARNING! Overflow: tBit:"+toggleBit+" SysAddr:"+systemadr+" Command:"+command);
+            return new int[0];
+        } else if (systemadr > 31) {
+            Log.insert("WARNING! Overflow: tBit:"+toggleBit+" SysAddr:"+systemadr+" Command:"+command);
+            return new int[0];
+        } else {
+            Log.insert("tBit:"+toggleBit+" SysAddr:"+systemadr+" Command:"+command);
+            rc5 = rc5 | (toggleBit<<11);
+            rc5 = rc5 | (systemadr<<6);
+            rc5 = rc5 |command;
+            IrCommand rc5Command=  IrCommand.RC5.buildRC5(12,rc5);
+            int[] pattern = rc5Command.pattern;
+            for (int d = 0; d < pattern.length; d++) {
+                pattern[d] = pattern[d] * multiply;
+            }
+            return pattern;
         }
-        return pattern;
     }
 
     public void Reset() {
@@ -335,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
             Break(null);
             roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
             roboter.setColormode(Roboter.ROBOTER_COLOR_MODE_AUTO);
-            SendIR(buildRC5(0,32,32));
+            SendIR(buildRC5(0,31,31));
             UpdateColorButton();
             UpdateButton();
         } catch( Exception e) {

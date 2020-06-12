@@ -9,9 +9,9 @@ public class Roboter {
     public static int ROBOTER_COLOR_MODE_MANUAL = 2;
 
 
-    public static int ROBOTER_ACCELERATE = 50;
+    public static int ROBOTER_ACCELERATE = 1;
     public static int ROBOTER_SLOW_DOWN = -2;
-    private static int maxSpeed = 300;
+    private static int maxSpeed = 63;
 
 
 
