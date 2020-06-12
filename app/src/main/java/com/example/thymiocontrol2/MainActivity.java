@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private int multiply = 1000000/freq;
 
     private boolean enableSlowDownTimer = false;
+    byte randomNumber = 0;
 
     ConsumerIrManager manager;
 
@@ -156,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
                                 int[] argb = envelope.getArgb();
+                                argb[1] = argb[1]/8;
+                                argb[2] = argb[2]/8;
+                                argb[3] = argb[3]/8;
                                 roboter.setColor(argb[1], argb[2], argb[3]);
                                 UpdateRoboterColor();
                                 UpdateColorButton();
@@ -204,13 +208,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void TurnRight() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
-            SendIR(buildRC5(0, 4, 0));
+            if(randomNumber < 60) randomNumber++;
+            else randomNumber = 0;
+            SendIR(buildRC5(0, 4, randomNumber));
         }
     }
 
     public void TurnLeft() {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
-            SendIR(buildRC5(0, 5, 0));
+            if(randomNumber < 60) randomNumber++;
+            else randomNumber = 0;
+            SendIR(buildRC5(0, 5, randomNumber));
         }
     }
 
@@ -299,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             SendIR(buildRC5(0,6,Roboter.ROBOTER_COLOR_MODE_MANUAL));
             SendIR(buildRC5(0,7,roboter.getColorR()));
             SendIR(buildRC5(0,8,roboter.getColorG()));
-            SendIR(buildRC5(0,7,roboter.getColorB()));
+            SendIR(buildRC5(0,9,roboter.getColorB()));
         } else {
             Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
             Log.insert("FAILED because of Robotor Colormode == "+roboter.getColormode());
