@@ -140,7 +140,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="110sp"
-            android:text="UP">
+            android:text="FASTER/FORWARD">
         </com.google.android.material.button.MaterialButton>
 
 
@@ -180,7 +180,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="300sp"
             android:id="@+id/stopButton"
-            android:text="STOP (N)"
+            android:text="STOP"
             app:backgroundTint="@color/colorPrimaryDark"
             android:onClick="Break">
         </com.google.android.material.button.MaterialButton>
@@ -193,7 +193,7 @@
             app:layout_constraintTop_toBottomOf="@+id/stopButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="DOWN"/>
+            android:text="SLOWER/BACKWARDS"/>
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

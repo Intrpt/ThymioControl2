@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.thymiocontrol2.control.Log;
 import com.example.thymiocontrol2.control.Roboter;
 import com.example.thymiocontrol2.proto2pattern.IrCommand;
+import com.example.thymiocontrol2.services.IRMessageManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean enableSlowDownTimer = false;
     byte randomNumber = 0;
 
-    ConsumerIrManager manager;
+    //ConsumerIrManager manager;
 
     private BottomNavigationView bottomNavigationView;
     private Roboter roboter;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         roboter = Roboter.getRoboter();
         slowDownTimer = new Handler();
-        manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
+        //manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -316,13 +317,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void SendIR(final int[] pattern) {
         UpdateSpeedView();
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                manager.transmit(freq,pattern);
-            }
-        });
-        t.start();
+        Intent ircmd = new Intent(this, IRMessageManager.class);
+        ircmd.putExtra(IRMessageManager.PARAM_IN_MSG, pattern);
+        startService(ircmd);
+
     }
     public int[] buildRC5(int toggleBit, int systemadr, int command) {
         long rc5 = 0;
