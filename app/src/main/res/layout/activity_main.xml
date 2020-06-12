@@ -140,7 +140,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="110sp"
-            android:text="FASTER/FORWARD">
+            android:text="FASTER/FORWARD"
+            android:onClick="Headway">
         </com.google.android.material.button.MaterialButton>
 
 
@@ -193,7 +194,8 @@
             app:layout_constraintTop_toBottomOf="@+id/stopButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="SLOWER/BACKWARDS"/>
+            android:text="SLOWER/BACKWARDS"
+            android:onClick="Backwards"/>
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

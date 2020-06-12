@@ -86,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        buttonUp.setOnTouchListener(new View.OnTouchListener() {
+       /* buttonUp.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Headway();
                 return false;
             }
-        });
+        });*/
 
         buttonRight.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -110,13 +110,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        buttonDown.setOnTouchListener(new View.OnTouchListener() {
+       /* buttonDown.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Backwards();
                 return false;
             }
-        });
+        });*/
 
 
 
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void Headway() {
+    public void Headway(View v) {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             SendIR(buildRC5(0, 2, roboter.accelerate(Roboter.ROBOTER_ACCELERATE)));
         }
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void Backwards() {
+    public void Backwards(View v) {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             if(roboter.getSpeed() > Roboter.ROBOTER_ACCELERATE*(-1)) {
                 SendIR(buildRC5(0, 3, roboter.accelerate(Roboter.ROBOTER_ACCELERATE*(-1))));
