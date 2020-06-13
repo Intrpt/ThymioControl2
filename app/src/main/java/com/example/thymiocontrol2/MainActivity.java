@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         slowDownTimer = new Handler();
         //manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
+        startService(new Intent(MainActivity.this,IRMessageManager.class));
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -143,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        stopService(new Intent(MainActivity.this, IRMessageManager.class));
         super.onStop();
     }
 
