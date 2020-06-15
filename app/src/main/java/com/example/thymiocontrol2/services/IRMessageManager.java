@@ -28,7 +28,9 @@ public class IRMessageManager extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             int[]pattern = intent.getIntArrayExtra(PARAM_IN_MSG);
-            manager.transmit(MainActivity.freq,pattern);
+            if(pattern != null && pattern.length > 0) {
+                manager.transmit(MainActivity.freq,pattern);
+            }
         }
     }
 
