@@ -19,14 +19,15 @@
         android:theme="@style/AppTheme">
         <service
             android:name=".services.IRMessageManager"
-            android:exported="false"></service>
-
-        <activity android:name=".LogActivity" />
-        <activity android:name=".ColorPickerActivity" />
-        <activity android:name=".MainActivity">
+            android:exported="false"/>
+        <activity
+            android:name=".LogActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
