@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void Break(View v) {
         if(roboter.getSpeed() !=  0) {
-            SendIR(buildRC5(0, 2, roboter.accelerate(roboter.getSpeed()*(-1))));
+            SendIR(buildRC5(0, 10, roboter.accelerate(roboter.getSpeed()*(-1))));
         }
     }
 

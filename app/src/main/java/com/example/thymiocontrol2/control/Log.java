@@ -12,9 +12,6 @@ public class Log {
 
     public static void insert(String str) {
         cLogfile();
-
-
-
         logfile.add("["+ DateFormat.getTimeInstance(DateFormat.MEDIUM).format(Calendar.getInstance().getTime())+"] "+str);
         if(logfile.size() > threshold) logfile.removeFirst();
     }
