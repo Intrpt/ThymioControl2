@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.insert("FAILED because of clicked view == "+v.toString());
                 return;
             }
-            SendIR(buildRC5(0,1,roboter.getColormode()));
+            SendIR(buildRC5(0,6,roboter.getColormode()));
             UpdateColorButton();
         } catch (Exception e) {
             Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
