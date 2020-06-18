@@ -23,6 +23,7 @@ import com.example.thymiocontrol2.control.Roboter;
 import com.example.thymiocontrol2.proto2pattern.IrCommand;
 import com.example.thymiocontrol2.services.IRMessageManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.ColorPickerView;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView speedView;
     private Handler slowDownTimer;
     private View colorPickerView;
+
+    private boolean tempLeft = false, tempRight = false, tempBackwards = false, tempHeadway = false;
 
 
     @Override
@@ -88,18 +91,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-       /* buttonUp.setOnTouchListener(new View.OnTouchListener() {
+        buttonUp.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Headway();
+                tempHeadway = !tempHeadway;
+                if(tempHeadway) Headway(null);
                 return false;
             }
-        });*/
+        });
 
         buttonRight.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                TurnRight();
+                tempRight = !tempRight;
+                if(tempRight) TurnRight(null);
                 return false;
             }
         });
@@ -107,18 +112,20 @@ public class MainActivity extends AppCompatActivity {
         buttonLeft.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                TurnLeft();
+                tempLeft = !tempLeft;
+                if(tempLeft) TurnLeft(null);
                 return false;
             }
         });
 
-       /* buttonDown.setOnTouchListener(new View.OnTouchListener() {
+       buttonDown.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Backwards();
+                tempBackwards = !tempBackwards;
+                if(tempBackwards) Backwards(null);
                 return false;
             }
-        });*/
+        });
 
 
 
@@ -210,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void TurnRight() {
+    public void TurnRight(View v) {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             if(randomNumber < 60) randomNumber++;
             else randomNumber = 0;
@@ -218,11 +225,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void TurnLeft() {
+    public void TurnLeft(View v) {
         if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_MANUAL) {
             if(randomNumber < 60) randomNumber++;
             else randomNumber = 0;
             SendIR(buildRC5(0, 5, randomNumber));
+
         }
     }
 
@@ -239,9 +247,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Break(View v) {
-        if(roboter.getSpeed() !=  0) {
             SendIR(buildRC5(0, 10, roboter.accelerate(roboter.getSpeed()*(-1))));
-        }
+                try {
+                     if(roboter.getStatus() == Roboter.ROBOTER_DRIVE_MODE_AUTO){
+                        roboter.setStatus(Roboter.ROBOTER_DRIVE_MODE_MANUAL);
+                         SendIR(buildRC5(0,1,roboter.getStatus()));
+                         UpdateButton();
+                         ((MaterialButtonToggleGroup)findViewById(R.id.toggleButton)).check(R.id.DriveModeManual);
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(this,"FAILED",Toast.LENGTH_LONG).show();
+                    Log.insert(e.toString());
+                }
     }
 
 
