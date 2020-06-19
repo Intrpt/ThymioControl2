@@ -6,17 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.example.thymiocontrol2.MainActivity;
-import com.example.thymiocontrol2.R;
+
 import com.example.thymiocontrol2.control.Log;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
+
+/**
+ * Diese Activity loggt alle Befehle die gesendet wurden,
+ * und alle Fehler die aufgetreten sind.
+ */
 public class LogActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
@@ -46,7 +47,7 @@ public class LogActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, Log.get());
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, Log.get());
         logList.setAdapter(arrayAdapter);
 
 
