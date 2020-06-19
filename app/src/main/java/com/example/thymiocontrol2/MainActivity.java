@@ -28,6 +28,12 @@ import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
 
+/**
+ *  Dieses Projekt verwendet folgende Libraries:
+ *  (1) Skydove's ColorPickerPreference: https://github.com/skydoves/ColorPickerPreference
+ *  (2) Teile aus Timnew's Android Infrared Library: https://github.com/timnew/AndroidInfrared
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     public static int freq = 36000;     //Frequenz des IR Signals

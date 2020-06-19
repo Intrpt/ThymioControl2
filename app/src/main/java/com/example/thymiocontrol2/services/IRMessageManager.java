@@ -8,6 +8,10 @@ import android.hardware.ConsumerIrManager;
 import com.example.thymiocontrol2.MainActivity;
 
 
+/**
+        Helper Service, der die Infrarot Nachrichten kontrolliert nach einander verschickt.
+        Verwendet eine Queue und verschickt jetzte Nachricht nach FIFO.
+ */
 public class IRMessageManager extends IntentService {
 
     public static final String PARAM_IN_MSG = "pattern";

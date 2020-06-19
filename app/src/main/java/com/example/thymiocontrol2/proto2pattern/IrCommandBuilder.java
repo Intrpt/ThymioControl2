@@ -2,9 +2,13 @@ package com.example.thymiocontrol2.proto2pattern;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Quelle: Timnew's Android Infrared Library: https://github.com/timnew/AndroidInfrared
+ */
+
+
 public class IrCommandBuilder {
 
-    public static final long TOP_BIT_32 = 0x1L << 31;
     public static final long TOP_BIT_64 = 0x1L << 63;
 
     private final int frequency;
@@ -51,13 +55,6 @@ public class IrCommandBuilder {
         return space(off).mark(on);
     }
 
-    public IrCommandBuilder delay(int ms) {
-        return space(ms * frequency / 1000);
-    }
-
-    public IrCommandBuilder sequence(SequenceDefinition definition, int length, int data) {
-        return sequence(definition, TOP_BIT_32, length, data);
-    }
 
     public IrCommandBuilder sequence(SequenceDefinition definition, int length, long data) {
         return sequence(definition, TOP_BIT_64, length, data);
@@ -89,9 +86,7 @@ public class IrCommandBuilder {
         return frequency;
     }
 
-    public List<Integer> getBuffer() {
-        return buffer;
-    }
+
 
     public static SequenceDefinition simpleSequence(final int oneMark, final int oneSpace, final int zeroMark, final int zeroSpace) {
         return new SequenceDefinition() {
@@ -107,9 +102,6 @@ public class IrCommandBuilder {
         };
     }
 
-    public static int[] buildRawSequence(int... rawData) {
-        return rawData;
-    }
 
     public static int[] buildRawSequence(List<Integer> buffer) {
         int[] result = new int[buffer.size()];
@@ -121,18 +113,6 @@ public class IrCommandBuilder {
         return result;
     }
 
-    public static int[] buildRawSequence(Iterable<Integer> dataStream) {
-        if (dataStream instanceof List) {
-            return buildRawSequence((List<Integer>) dataStream);
-        }
-
-        ArrayList<Integer> buffer = new ArrayList<Integer>();
-        for (int data : dataStream) {
-            buffer.add(data);
-        }
-
-        return buildRawSequence(buffer);
-    }
 
     public static abstract interface SequenceDefinition {
 
