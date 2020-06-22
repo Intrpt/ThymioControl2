@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Kritischer Fehler")
-                    .setMessage("Dieses Gerät verfügt nicht über eine Infrarot Schnittstelle und darf diese App nicht verwenden.")
+                    .setMessage("Dieses Gerät verfügt nicht über eine Infrarot Schnittstelle und kann diese App nicht verwenden.")
                     .show();
         }
 
