@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.ConsumerIrManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         //Buttons initialisieren
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         buttonUp = findViewById(R.id.ButtonUp);
@@ -68,73 +71,89 @@ public class MainActivity extends AppCompatActivity {
         speedView = findViewById(R.id.speed);
         colorPickerView = findViewById(R.id.colorPickerView);
 
-        roboter = Roboter.getRoboter(); //initialisiert das Hilfsobjekt roboter.
-        slowDownTimer = new Handler(); //siehe enableSlowDownTimer
-        //manager = (ConsumerIrManager) getSystemService(CONSUMER_IR_SERVICE);
 
-        startService(new Intent(MainActivity.this,IRMessageManager.class));
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.mainPage:
-                        break;
-                    case R.id.logPage:
-                        //Wechseln zur Logfile Activity
-                        Intent intent = new Intent(MainActivity.this,LogActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intent);
-                        break;
-                    case R.id.reset:
-                        //Thymio Reset
-                        Reset();
-                        break;
-                    default: Toast.makeText(MainActivity.this,"FAILED",Toast.LENGTH_LONG).show();
+        ConsumerIrManager manager = (ConsumerIrManager)getSystemService(CONSUMER_IR_SERVICE);
+        if(manager != null) {
+
+            roboter = Roboter.getRoboter(); //initialisiert das Hilfsobjekt roboter.
+            slowDownTimer = new Handler(); //siehe enableSlowDownTimer
+
+            startService(new Intent(MainActivity.this,IRMessageManager.class));
+
+            bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.mainPage:
+                            break;
+                        case R.id.logPage:
+                            //Wechseln zur Logfile Activity
+                            Intent intent = new Intent(MainActivity.this,LogActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            break;
+                        case R.id.reset:
+                            //Thymio Reset
+                            Reset();
+                            break;
+                        default: Toast.makeText(MainActivity.this,"FAILED",Toast.LENGTH_LONG).show();
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
 
 
 
-        buttonUp.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                tempHeadway = !tempHeadway;
-                if(tempHeadway) Headway(null);
-                return true;
-            }
-        });
+            buttonUp.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    tempHeadway = !tempHeadway;
+                    if(tempHeadway) Headway(null);
+                    return true;
+                }
+            });
 
-        buttonRight.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                tempRight = !tempRight;
-                if(tempRight) TurnRight(null);
-                return false;
-            }
-        });
+            buttonRight.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    tempRight = !tempRight;
+                    if(tempRight) TurnRight(null);
+                    return false;
+                }
+            });
 
-        buttonLeft.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                tempLeft = !tempLeft;
-                if(tempLeft) TurnLeft(null);
-                return false;
-            }
-        });
+            buttonLeft.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    tempLeft = !tempLeft;
+                    if(tempLeft) TurnLeft(null);
+                    return false;
+                }
+            });
 
-       buttonDown.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                tempBackwards = !tempBackwards;
-                if(tempBackwards) Backwards(null);
-                return false;
-            }
+            buttonDown.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    tempBackwards = !tempBackwards;
+                    if(tempBackwards) Backwards(null);
+                    return false;
+                }
 
 
-        });
+            });
+        } else {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Kritischer Fehler")
+                    .setMessage("Dieses Gerät verfügt nicht über eine Infrarot Schnittstelle und darf diese App nicht verwenden.")
+                    .show();
+        }
+
+
+
+
+
+
 
 
 
